@@ -65,7 +65,7 @@ class FollowController extends Controller
     public function destroy(User $user)
     {
         //
-      Auth::user()->followings()->attach($user->id);
+      Auth::user()->followings()->detach($user->id);
       return redirect()->back();
     }
 }
