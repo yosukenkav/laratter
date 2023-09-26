@@ -132,5 +132,21 @@ class TweetController extends Controller
         ->get();
       return view('tweet.index', compact('tweets'));
     }
-    
+
+    public function memo()
+    {
+       // ログインしているユーザーのIDを取得
+    $userId = Auth::id();
+
+    // ログインしているユーザー自身の投稿で、自分がお気に入り登録したツイートのみを取得
+    $tweets = Tweet::where('user_id', $userId)
+        ->whereIn('id', function ($query) use ($userId) {
+            $query->select('tweet_id')
+                ->from('tweet_user');
+        })
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    return view('tweet.index', compact('tweets'));
+    }
 }
